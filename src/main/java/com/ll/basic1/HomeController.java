@@ -2,6 +2,7 @@ package com.ll.basic1;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -12,16 +13,12 @@ public class HomeController {
     public String showMain(){
         return "main";
     }
-    @GetMapping("/home/main2")
+    @GetMapping("/home/plus")
 
     @ResponseBody
-    public String showMain2(){
-        return "main2 ";
-    }
-    @GetMapping("/home/main3")
-
-    @ResponseBody
-    public String showMain3(){
-        return "main3 ";
+    // ?뒤 퀴리스트링 옵션적용
+    // defaultValue를 통한 누락 방지
+    public int showPlus(@RequestParam(defaultValue = "0") int a,@RequestParam(defaultValue = "0") int b){
+        return a+b;
     }
 }

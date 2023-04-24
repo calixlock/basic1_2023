@@ -3,6 +3,7 @@ package com.ll.basic1;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,31 +16,30 @@ import java.util.Map;
 
 @Controller
 public class HomeController {
+    private List<Person> people;
+    public HomeController() {
+        people = new ArrayList<>();
+    }
     @GetMapping("/home/main")
-
     @ResponseBody
     public String returnMain() {
         return "main";
     }
 
     @GetMapping("/home/plus")
-
     @ResponseBody
     // ?뒤 퀴리스트링 옵션적용
     // defaultValue를 통한 누락 방지
     public int returnPlus(@RequestParam(defaultValue = "0") int a, @RequestParam(defaultValue = "0") int b) {
         return a + b;
     }
-
     @GetMapping("/home/boolean")
-
     @ResponseBody
     public Boolean returnBoolean() {
         return true;
     }
 
     @GetMapping("/home/IntArray")
-
     @ResponseBody
     public int[] returnIntArray() {
         int[] arr = new int[]{10, 20, 30};
@@ -84,6 +84,7 @@ public class HomeController {
         }});
         return car1;
     }
+
     @GetMapping("/home/car_v3_Class")
     @ResponseBody
     public Car_V2 returnCarV3() {
@@ -97,6 +98,7 @@ public class HomeController {
 
         return car;
     }
+
     @GetMapping("/home/car_v4_ListMap")
     @ResponseBody
     public List<Map<String, Object>> returnCarV4(){
@@ -130,6 +132,7 @@ public class HomeController {
         }};
         return listMap;
     }
+
     @GetMapping("/home/car_v5_List")
     @ResponseBody
     public List<Car_V2> returnCarV5(){
@@ -149,6 +152,21 @@ public class HomeController {
            add(car2);
         }};
         return list_car;
+    }
+
+    @GetMapping("/home/addPerson")
+    @ResponseBody
+    public String addPerson(String name,int age){
+        Person p = new Person(name,age);
+        //입력 결과 확인시 @ToString 추가
+        System.out.println(p);
+        people.add(p);
+        return "%d번 사람이 추가되었습니다".formatted(p.getId());
+    }
+    @GetMapping("/home/people")
+    @ResponseBody
+    public List<Person> returnPeople(){
+        return people;
     }
 }
 
@@ -188,4 +206,27 @@ class Car_V2{
     private  String name;
     private final List<Integer> relatedIds;
 
+}
+
+@AllArgsConstructor
+@Getter
+@ToString
+class Person {
+    private static int lastId;
+    private final int id;
+    private final String name;
+    private final int age;
+    static {
+        lastId = 0;
+    }
+//    @AllArgsConstructor로 대체
+//    public Person(int id, String name, int age) {
+//        this.id = id;
+//        this.name = name;
+//        this.age = age;
+//}
+//    특정 생성자 필요시 제작필요
+    Person(String name, int age) {
+        this(++lastId, name, age);
+    }
 }

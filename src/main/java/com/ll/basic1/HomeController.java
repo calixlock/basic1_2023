@@ -171,9 +171,26 @@ public class HomeController {
         if (removed == false){
             return "%d번 사람이 존재하지 않습니다.".formatted(id);
         }
-
         return "%d번 사람이 제거되었습니다.".formatted(id);
     }
+    @GetMapping("/home/modifyPerson")
+    @ResponseBody
+    public String modifyPerson(int id, String name, int age){
+        Person found = people
+                .stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+        if (found == null){
+            return "%d번 사람이 존재하지 않습니다.".formatted(id);
+        }
+        found.setId(id);
+        found.setName(name);
+        found.setAge(age);
+        return "%d번 사람이 수정되었습니다.".formatted(id);
+    }
+
+
     @GetMapping("/home/people")
     @ResponseBody
     public List<Person> returnPeople(){
@@ -224,9 +241,12 @@ class Car_V2{
 @ToString
 class Person {
     private static int lastId;
-    private final int id;
-    private final String name;
-    private final int age;
+    @Setter
+    private int id;
+    @Setter
+    private String name;
+    @Setter
+    private int age;
     static {
         lastId = 0;
     }

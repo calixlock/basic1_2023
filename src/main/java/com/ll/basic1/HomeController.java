@@ -58,9 +58,9 @@ public class HomeController {
         return lit;
     }
 
-    @GetMapping("/home/Map")
+    @GetMapping("/home/car_v1_Map")
     @ResponseBody
-    public Map<String, Object> returnMap() {
+    public Map<String, Object> returnCarV1() {
         Map<String, Object> map = new LinkedHashMap<>() {{
             put("id", 1);
             put("speed", 100);
@@ -74,9 +74,9 @@ public class HomeController {
         return map;
     }
 
-    @GetMapping("/home/classObj_car")
+    @GetMapping("/home/car_v2_Class")
     @ResponseBody
-    public Car returnCar() {
+    public Car returnCarV2() {
         Car car1 = new Car(1, 100, "라인", new ArrayList<>() {{
             add(2);
             add(10);
@@ -84,9 +84,9 @@ public class HomeController {
         }});
         return car1;
     }
-    @GetMapping("/home/classObj_car2")
+    @GetMapping("/home/car_v3_Class")
     @ResponseBody
-    public Car_V2 returnCarV2() {
+    public Car_V2 returnCarV3() {
         Car_V2 car = new Car_V2(1, 100, "소나타", new ArrayList<>() {{
             add(2);
             add(3);
@@ -96,6 +96,59 @@ public class HomeController {
         car.setName(car.getName() + "V2");
 
         return car;
+    }
+    @GetMapping("/home/car_v4_ListMap")
+    @ResponseBody
+    public List<Map<String, Object>> returnCarV4(){
+        Map<String, Object> car1 = new LinkedHashMap<>() {{
+            put("id",1);
+            put("speed",100);
+            put("name", "소나타");
+            put("relatedIds",new ArrayList<>() {{
+                add(2);
+                add(3);
+                add(4);
+
+            }});
+        }};
+        Map<String, Object> car2 = new LinkedHashMap<>() {{
+            put("id",2);
+            put("speed",200);
+            put("name", "그랜저");
+            put("relatedIds",new ArrayList<>() {{
+                add(5);
+                add(6);
+                add(7);
+            }});
+        }};
+//        List<Map<String, Object>> listMap = new ArrayList<>();
+//        listMap.add(car1);
+//        listMap.add(car2);
+        List<Map<String, Object>> listMap = new ArrayList<>(){{
+            add(car1);
+            add(car2);
+        }};
+        return listMap;
+    }
+    @GetMapping("/home/car_v5_List")
+    @ResponseBody
+    public List<Car_V2> returnCarV5(){
+        Car_V2 car1 = new Car_V2(1, 111, "소나타", new ArrayList<>() {{
+            add(2);
+            add(3);
+            add(4);
+        }});
+        Car_V2 car2 = new Car_V2(2, 222, "그랜저", new ArrayList<>() {{
+            add(5);
+            add(6);
+            add(7);
+        }});
+
+        List<Car_V2> list_car = new ArrayList<>(){{
+           add(car1);
+           add(car2);
+        }};
+        return list_car;
     }
 }
 
@@ -111,19 +164,15 @@ class Car{
         this.name = name;
         this.relatedIds = relatedIds;
     }
-
     public int getId() {
         return id;
     }
-
     public int getSpeed() {
         return speed;
     }
-
     public String getName() {
         return name;
     }
-
     public List<Integer> getRelatedIds() {
         return relatedIds;
     }
@@ -131,15 +180,12 @@ class Car{
 }
 // lombok 기능을 통한 구현 좀더 단순하게 구현 가능
 @AllArgsConstructor
-@Getter
+@Getter// class에 포함된 모든 인자 getter추가
 class Car_V2{
-
     private final int id;
-
     private final int speed;
-    @Setter
+    @Setter// 특정 인자 setter추가
     private  String name;
-
     private final List<Integer> relatedIds;
 
 }

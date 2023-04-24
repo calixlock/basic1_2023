@@ -17,9 +17,10 @@ import java.util.Map;
 @Controller
 public class HomeController {
     private List<Person> people;
-    public HomeController() {
+    public HomeController(){
         people = new ArrayList<>();
     }
+
     @GetMapping("/home/main")
     @ResponseBody
     public String returnMain() {
@@ -162,6 +163,16 @@ public class HomeController {
         System.out.println(p);
         people.add(p);
         return "%d번 사람이 추가되었습니다".formatted(p.getId());
+    }
+    @GetMapping("/home/removePerson")
+    @ResponseBody
+    public String removePerson(int id){
+        boolean removed = people.removeIf(person -> person.getId() == id);
+        if (removed == false){
+            return "%d번 사람이 존재하지 않습니다.".formatted(id);
+        }
+
+        return "%d번 사람이 제거되었습니다.".formatted(id);
     }
     @GetMapping("/home/people")
     @ResponseBody
